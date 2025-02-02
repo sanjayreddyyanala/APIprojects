@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat facts api implementation</title>
+</head>
+<body>
+    <h1>Get random cat facts</h1>
+    <button>get new fact</button>
+    <p></p>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        let btn = document.querySelector("button");
+        let p = document.querySelector("p");
+        let url = "https://catfact.ninja/fact";
+        btn.addEventListener("click",getRandomFact);
+        async function getRandomFact() {
+            try {
+                let res = await axios.get(url); // res is object that contains data object inside it
+                // fact is the key inside data object that contains the actual fact
+                p.innerText = res.data.fact;
+            } catch (err) {
+                p.innerText = "An error occurred! Try Again!"
+            }
+        }
+    </script>
+</body>
+</html>

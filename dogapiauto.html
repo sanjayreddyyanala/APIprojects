@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog api auto</title>
+    <style>
+        img {
+            margin-top: 20px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Display dog images continuosly</h1>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="clear">clear</button>
+    <div>
+        <img src="" alt="">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        let img = document.querySelector("img");
+        let start = document.querySelector("#start");
+        let stop = document.querySelector("#stop");
+        let clear = document.querySelector("#clear");
+        let url = "https://dog.ceo/api/breeds/image/random";
+        let id = undefined;
+        start.addEventListener("click",display);
+        stop.addEventListener("click",stopDisplay);
+        clear.addEventListener("click",clearDisplay);
+        async function display() {
+            id = setInterval(async () => {
+                try {
+                    let linkObj = await axios.get(url); // get returns promise so wait
+                    img.src = linkObj.data.message;
+                } catch(err) {
+                    alert("error occured");
+                }
+            },1000);
+        }
+
+        function stopDisplay() {
+            clearInterval(id);
+        }
+        async function clearDisplay() {
+            await clearInterval(id);
+            setTimeout(()=>{
+                img.src = "#"; // reason to write inside timeout is that even though interval is cleared the current last loop 
+                // in the setinterval would be running and after 1 sec is completed new img will be display 
+            },100);
+        }
+
+    </script>
+</body>
+</html>

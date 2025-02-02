@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dog api</title>
+
+    <style>
+        img {
+            margin-top: 20px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dog Api demo</h1>
+    <button>get new image</button>
+    <div>
+        <img src="" alt="">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        let img = document.querySelector("img");
+        let btn = document.querySelector("button");
+        let url = "https://dog.ceo/api/breeds/image/random";
+        btn.addEventListener("click",async () => {
+            let linkObj = await getDogLink(); // async returns promise so wait
+            img.src = linkObj.data.message;
+        });
+        
+        
+        
+        async function getDogLink() {
+            try {
+                let linkObj = await axios.get(url); // get returns promise so wait
+                console.log(linkObj);
+                return linkObj;
+            } catch(err) {
+                alert("error occured");
+            }
+        }
+
+        // async function fun() {
+        //     let config = {headers : {Accept : "application/json"}};
+        //     let data1 = await axios.get("https://icanhazdadjoke.com/",config);
+        //     console.log(data1.data.joke);
+        // }
+        // fun();
+    </script>
+</body>
+</html>

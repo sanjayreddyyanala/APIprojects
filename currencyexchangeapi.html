@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="inp1" onfocus="this.select()">
+    <select name="from" id="select1">
+        <option value="INR">India</option>
+        <option value="USD">United States</option>
+        <option value="AUD">Australia</option>
+        <option value="GBP">United Kingdom</option>
+        <option value="JPY">Japan</option>
+        <option value="CAD">Canada</option>
+        <option value="CNY">China</option>
+        <option value="EUR">Germany</option>
+    </select>
+    <input type="text" id="inp2" onfocus="this.select()">
+    <select name="to" id="select2">
+        <option value="INR">India</option>
+        <option value="USD">United States</option>
+        <option value="AUD">Australia</option>
+        <option value="GBP">United Kingdom</option>
+        <option value="JPY">Japan</option>
+        <option value="CAD">Canada</option>
+        <option value="CNY">China</option>
+        <option value="EUR">Germany</option>
+    </select>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        let url = "https://open.er-api.com/v6/latest/";
+        let inp1 = document.querySelector("#inp1");
+        let inp2 = document.querySelector("#inp2");
+        let select1 = document.querySelector("#select1");
+        let select2 = document.querySelector("#select2");
+        inp1.addEventListener("input",async () => {
+            let fromCode = select1.value;
+            let toCode = select2.value;
+            let result = await exchange(fromCode,toCode);   
+            inp2.value = (inp1.value*result).toFixed(2);
+        });
+        inp2.addEventListener("input",async () => {
+            let fromCode = select2.value;
+            let toCode = select1.value;
+            let result = await exchange(fromCode,toCode);
+            inp1.value = (inp2.value*result).toFixed(2);
+        });
+        select1.addEventListener("input",async () => {
+            let fromCode = select1.value;
+            let toCode = select2.value;
+            let result = await exchange(fromCode,toCode);
+            inp2.value = (inp1.value*result).toFixed(2);
+        });
+        select2.addEventListener("input",async () => {
+            let fromCode = select2.value;
+            let toCode = select1.value;
+            let result = await exchange(fromCode,toCode);
+            inp1.value = (inp2.value*result).toFixed(2);
+        });
+        async function exchange(fromCode,toCode) {
+            let res = await axios.get(url+fromCode);
+            return res.data.rates[toCode];
+        }
+    </script>
+</body>
+</html>
